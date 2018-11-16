@@ -58,16 +58,11 @@ public class Anagram {
     //I am using a linked list because its add() and remove() methods are very efficient, and my
     //implementation will be using these methods a lot.
 
-    //I am doing all of these operations in one pass for efficiency purposes.
+
 
     //The conversion to character arrays is so that I can sort these and compare them to find
     //anagrams.
-    List<String> stringList = new LinkedList<>();
-    String s2;
-    for (String s : array) {
-      s2 = s.toLowerCase();
-      stringList.add(sortCharsIntoString(s2.toCharArray()));
-    }
+
     //Want to total the anagrams in a O(N) pass.
     //To do this I will iterate through the list while storing already seen strings into a hashmap,
     //then use that set to determine if a string has an anagram or not.
@@ -75,24 +70,30 @@ public class Anagram {
     //already or not.
     //Also HashMap has O(1) for determining if a key is present.
 
-    HashMap<String, Boolean> seenStrings = new HashMap<>(stringList.size());
+    //I am doing all of these operations in one pass for efficiency purposes.
+
+    HashMap<String, Boolean> seenStrings = new HashMap<>(array.length);
     int count = 0;
-    for (String s : stringList) {
-      if (seenStrings.containsKey(s)) {
+    String s2, s3;
+    for (String s : array) {
+      s2 = s.toLowerCase();
+      s3 = sortCharsIntoString(s2.toCharArray());
+
+      if (seenStrings.containsKey(s3)) {
         //i.e. this is the 3rd or greater time we have seen this string
-        if (seenStrings.get(s)) {
+        if (seenStrings.get(s3)) {
           ++count;
         }
         //because both this string and its earlier found pair should now be recorded as anagrams on
         //the second time we find this string
         else {
           count = count + 2;
-          seenStrings.put(s, true);
+          seenStrings.put(s3, true);
         }
       }
       //If the string hasn't been seen yet
       else {
-        seenStrings.put(s, false);
+        seenStrings.put(s3, false);
       }
     }
     return count;
